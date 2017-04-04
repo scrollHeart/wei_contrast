@@ -1,0 +1,53 @@
+@import 'vars.scss';
+.footBox{
+    display: flex;
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
+    width: 100%;
+    height: 51px;
+    font-size: 10px;
+    -webkit-box-shadow: 0px -2px 3px rgba(103,103,103,.2);
+    box-shadow: 0px -2px 3px rgba(103,103,103,.2);
+}
+.icon{
+    font:  24px iconfont;
+    color:  $cor_a9;
+}
+.md:before{
+    content: '\e617';
+}
+.supplier:before{
+    content: '\e63d';
+}    
+.classify:before{
+    content: '\e648';
+} 
+
+.weui_tabbar_icon{
+    text-align: center;
+}
+.weui_tabbar_item.weui_bar_item_on .weui_tabbar_label{
+    color: $cor_389;
+}
+.weui_tabbar_item.weui_bar_item_on .icon{
+    color: $cor_389;
+}
+.weui_tabbar_item.weui_bar_item_on .icon.md:before{
+    content: '\e617';
+}
+.weui_tabbar_item.weui_bar_item_on .icon.supplier:before{
+    content: '\e63d';
+}
+.weui_tabbar_item.weui_bar_item_on .icon.classify:before{
+    content: '\e648';
+}
+
+.weui_tabbar_icon+.weui_tabbar_label{
+    margin-top: 0!important;
+    font-size: 10px!important;
+    line-height: 16px!important;
+}
+.weui_tabbar_item {
+    padding: 7px 0 4px!important;
+}
