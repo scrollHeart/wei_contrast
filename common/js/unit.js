@@ -6,7 +6,7 @@ import md5 from 'js-md5'
  */
 export function setDate(isHasDay) {
   let timeStr, y, m, d, date
-  timeStr = new Date('2016-10')
+  timeStr = new Date('2016-03')
   y = timeStr.getFullYear()
   m = timeStr.getMonth()
   d = timeStr.getDay()
@@ -23,7 +23,7 @@ export function setDate(isHasDay) {
  */
 export function setOriginDate(isHasDay) {
   let timeStr, y, m, d, date
-  timeStr = new Date('2016-10')
+  timeStr = new Date('2016-03')
 
   y = timeStr.getFullYear()
   m = timeStr.getMonth() + 1

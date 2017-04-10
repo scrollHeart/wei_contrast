@@ -21,7 +21,7 @@
     <div class="loadingWrap" v-if="show" :transition="fade">
       <load v-if="show"></load> 
     </div>
-    <div class="errorWrap" v-if="error">
+    <div class="errorWrap" v-show="error">
       <div>     
         <img src="assets/dataError.png">
         <span>数据请求失败，请重新刷新页面</span> 
@@ -240,7 +240,7 @@ export default {
   height: 100%;
   background-color: $fs_fff;
   position: absolute;
-  z-index: 100;
+  z-index: 101;
   font-size: 14px;
   color:  $fs_d1;
   display: flex;

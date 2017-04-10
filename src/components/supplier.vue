@@ -54,8 +54,8 @@ import store from '../vuex/store'
         resData: [],
         apiUrl: [
 
-         // 121.69.42.34:9089 http://shxh.pms.com
-          'http://shxh.pms.com/api/SJFX/GetPreTopSupplierList'
+         // 121.69.42.34:9089 http://shxh.pms.com http://pms.bookmall.com.cn
+          'http://pms.bookmall.com.cn/api/SJFX/GetPreTopSupplierList'
         ],
         editShow: false,
         selectArr: [],
@@ -433,5 +433,6 @@ import store from '../vuex/store'
     bottom: 0;
     padding-top: 10px;
     overflow-y: auto;  
+    -webkit-overflow-scrolling: touch;
   }
 </style>

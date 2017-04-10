@@ -44,7 +44,7 @@ import store from '../vuex/store'
         lists: [],
         apiUrl: [
         // C_03 200.1.3.89:1209 shda.91onix.com
-          'http://shda.91onix.com/App/AppCommon/GetFirstSaleClassify'
+          'http://shda.bookmall.com.cn/App/AppCommon/GetFirstSaleClassify'
         ],        
         editShow: false,
         selectArr: [],

@@ -89,8 +89,8 @@ import store from '../vuex/store'
         // editShow(控制选择页面的显示与隐藏)
         editShow: false,
         apiUrl: [
-        // C_01 121.69.42.34:9089 http://shxh.pms.com
-          'http://shxh.pms.com/api/SJFX/GetMdList'
+        // C_01 121.69.42.34:9089 http://shxh.pms.com http://pms.bookmall.com.cn
+          'http://pms.bookmall.com.cn/api/SJFX/GetMdList'
         ],
         // selectArr(储存用户选中的门店名称)
         selectArr: []
@@ -281,8 +281,7 @@ import store from '../vuex/store'
   }
   .edit{
     width: 100%;
-    height: 100%; 
-    overflow-y: auto;       
+    height: 100%;            
     position: absolute;
     top: 0;
     left: 0;
@@ -342,6 +341,7 @@ import store from '../vuex/store'
     position: absolute;
     bottom: 0;
     overflow-y: auto; 
+    -webkit-overflow-scrolling: touch;
     padding-top: 15px; 
   }
   .con{
