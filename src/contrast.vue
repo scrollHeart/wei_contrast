@@ -75,7 +75,7 @@ export default {
 
       return date
     },
-    ymN() {
+    nowMonth() {
 
       let date = new Date()
       let y = date.getFullYear();
@@ -86,8 +86,12 @@ export default {
           m = '0' + m
       }
       let ym = y + m
-      let ymN = parseInt(ym)
-      return ymN
+      let nowMonth = parseInt(ym)
+      return nowMonth
+    },
+    selMonth(){
+
+      return parseInt(this.StartTime.substr(0,4) + this.StartTime.substr(5,2))
     }
   },
   watch: {
@@ -98,18 +102,23 @@ export default {
       store.dispatch('ENDTIME', {
         EndTime: this.EndTime
       })
-
+      store.dispatch('NOWMONTH',{
+        nowMonth: this.nowMonth
+      })
+      store.dispatch('SELMONTH',{
+        selMonth: this.selMonth
+      })
+      
       let corNext = this.$els.timeSelect.getElementsByClassName('next')[0]
       let corPrev = this.$els.timeSelect.getElementsByClassName('prev')[0]
 
       // 当前时间（如2016-09）转换成数字类型，和所选时间进行比较
 
-      let valN = parseInt(val.substr(0,4) + val.substr(5,2))
+      let endN = parseInt(this.EndTime.substr(0,4) + this.EndTime.substr(5,2))
+
 
       // 判断所选时间是否大于当前月份，是则不再请求数据，否则继续请求，同时界面显示暂无数据
-      if(valN >= this.ymN){
-
-        corNext.style.color = '#ddd'
+      if(this.selMonth >= this.nowMonth){
 
         this.$broadcast('noData')
 
@@ -118,9 +127,17 @@ export default {
 
       // 监测时间变化，重新请求数据，渲染页面,下一月按钮置灰
 
-        corNext.style.color = '#444'
-
         this.$broadcast('changeTime')
+      }
+
+      if(endN >= this.nowMonth){
+
+        corNext.style.color = '#ddd'
+
+      }else{
+        
+        corNext.style.color = '#444'
+     
       }
       // 当时间大于2015-01 则上一月按钮高亮，否则置灰
       if(val == '2015-01'){
@@ -152,7 +169,7 @@ export default {
       this.$els.footer.style.display = 'block';
     },
     refresh(){
-      location.reload();
+      location.href = "/md/mdSale"
     }  
   }
 }

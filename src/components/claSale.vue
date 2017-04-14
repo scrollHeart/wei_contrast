@@ -33,15 +33,15 @@
   import echarts from 'echarts'
   import macarons from 'echarts/theme/macarons'
   import { setDate, getStartTime, getEndTime, setMd5 } from 'utilJs/unit'
-  import { getStartT, getEndT, getClaId } from '../vuex/getters'
+  import { getStartT, getEndT, getClaId, getNowMonth, getSelMonth, getUserCode, getApiUrl1 } from '../vuex/getters'
   import store from '../vuex/store'
   export default {
     data () {
       return {       
-        urlApi: [
-        // s_08 200.1.3.89:1209 shda.91onix.com http://shda.test.com
-          'http://shda.bookmall.com.cn/App/AppSales/ContrastFacetByVariety'
-        ],
+        // urlApi: [
+        // // s_08 200.1.3.89:1209 shda.91onix.com http://shda.test.com
+        //   'http://shda.bookmall.com.cn/App/AppSales/ContrastFacetByVariety'
+        // ],
         yes: true,
         isShow: false,
         myChart1: Object,
@@ -159,11 +159,17 @@
       getters:{
         StartT: getStartT,
         EndT: getEndT,
-        claList: getClaId
+        claList: getClaId,
+        nowMonth: getNowMonth,
+        selMonth: getSelMonth,
+        UserCode: getUserCode,
+        ApiUrl1: getApiUrl1            
       }  
     },
     route:{
       data({to,from}){
+
+        console.log(this.selMonth,this.nowMonth)
 
         store.dispatch('TIMESHOW',{timeShow: true})
         
@@ -191,6 +197,11 @@
         }      
       }    
     },
+    computed:{
+      urlApi(){
+        return this.ApiUrl1 + '/App/AppSales/ContrastFacetByVariety'
+      }
+    },
     ready () {
 
       // 初始化echarts图
@@ -201,7 +212,7 @@
         "StartTime":this.StartT,
         "EndTime":this.EndT,
         "Classifies": this.claList,
-        "UserCode": "0"
+        "UserCode": this.UserCode
       })
           
     },
@@ -216,7 +227,7 @@
           "StartTime":this.StartT,
           "EndTime":this.EndT,
           "Classifies": this.claList,
-          "UserCode": "0"
+          "UserCode": this.UserCode
         })
       },
       changeTime(){
@@ -228,7 +239,7 @@
             "StartTime":this.StartT,
             "EndTime":this.EndT,
             "Classifies": this.claList,
-            "UserCode": "0"
+            "UserCode": this.UserCode
           })
       },
       noData(){
@@ -266,15 +277,29 @@
         this.isShow = false;
         this.yes = true;
 
-        this.whichEcharts (this.lists,'MyRate','MyRate','FormatMy',1)
+        if(this.selMonth >= this.nowMonth){
+
+          this.$emit('noData')
+
+        }else{
+
+          this.whichEcharts (this.lists,'MyRate','MyRate','FormatMy',1)
+        }
 
       },
       goEcharts2 () {
         this.isShow = true;
         this.yes = false;
 
-        this.whichEcharts (this.lists,'VarietyRate','VarietyRate','Variety',2)
+        if(this.selMonth >= this.nowMonth){
 
+          this.$emit('noData')
+
+        }else{
+
+          this.whichEcharts (this.lists,'VarietyRate','VarietyRate','Variety',2)
+
+        }
       },
       whichEcharts (arr,condition,op1,op2,n) {
 
@@ -374,7 +399,8 @@
       },
       getPieChart(postProps){
         // 门店销售数据
-        let url = this.urlApi[0]
+        let url = this.urlApi
+        console.log(url)
         // md5加密
         let md5Obj = setMd5(postProps)
         let sign = md5Obj.sign

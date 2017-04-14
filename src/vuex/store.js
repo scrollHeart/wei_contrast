@@ -4,7 +4,8 @@ import {
     setDate,
     getStartTime,
     getEndTime,
-    setMd5
+    setMd5,
+    nowMonth
 } from 'utilJs/unit'
 
 // 告诉 vue “使用” vuex
@@ -17,10 +18,17 @@ const state = {
     error: false,
     StartTime: getStartTime(setDate(false)),
     EndTime: getEndTime(setDate(false)),
+    nowMonth: nowMonth(),
+    selMonth: parseInt(setDate().substr(0, 4) + setDate().substr(5, 2)),
     timeShow: true,
     mdId: ["03280", "03289"],
     supId: ["S1572", "S1263"],
-    claId: ["I", "P"]
+    claId: ["I", "P"],
+    UserCode: window.localStorage.getItem('userId'),
+    // 200.1.3.89:1209 shda.91onix.com http://shda.bookmall.com.cn
+    apiUrl1: 'http://shda.bookmall.com.cn',
+    // 121.69.42.34:9089 http://shxh.pms.com http://pms.bookmall.com.cn
+    apiUrl2: 'http://pms.bookmall.com.cn'
 }
 
 // 创建一个对象存储一系列我们接下来要写的 mutation 函数
@@ -37,6 +45,12 @@ const mutations = {
     },
     ENDTIME(state, payload) {
         state.EndTime = payload.EndTime
+    },
+    NOWMONTH(state, payload) {
+        state.nowMonth = payload.nowMonth
+    },
+    SELMONTH(state, payload) {
+        state.selMonth = payload.selMonth
     },
     TIMESHOW(state, payload) {
         state.timeShow = payload.timeShow

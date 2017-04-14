@@ -33,14 +33,14 @@
   import macarons from 'echarts/theme/macarons'
   import { setDate, getStartTime, getEndTime, setMd5 } from 'utilJs/unit'
   import store from '../vuex/store'
-  import { getClaId } from '../vuex/getters'
+  import { getClaId, getUserCode, getApiUrl1 } from '../vuex/getters'
   export default {
     data () {
       return {
-        urlApi: [
-          // sk_07 200.1.3.89:1209 shda.91onix.com http://shda.test.com
-          'http://shda.bookmall.com.cn/App/AppStock/ContrastFacetByVariety'
-        ],
+        // urlApi: [
+        //   // sk_07 200.1.3.89:1209 shda.91onix.com http://shda.test.com
+        //   'http://shda.bookmall.com.cn/App/AppStock/ContrastFacetByVariety'
+        // ],
         yes: true,
         isShow: false,
         myChart1: Object,
@@ -156,7 +156,9 @@
     },
     vuex: {
       getters:{
-        claList: getClaId
+        claList: getClaId,
+        UserCode: getUserCode,
+        ApiUrl1: getApiUrl1
       }  
     },
     route:{
@@ -187,6 +189,11 @@
         }
       }    
     },
+    computed:{
+      urlApi(){
+        return this.ApiUrl1 + '/App/AppStock/ContrastFacetByVariety'
+      }
+    },
     ready () {
 
       // 初始化echarts图
@@ -195,7 +202,7 @@
       
       this.getPieChart({
         "Classifies": this.claList,
-        "UserCode": "0"
+        "UserCode": this.UserCode      
       })      
     },
     events: {
@@ -206,7 +213,7 @@
 
         this.getPieChart({
           "Classifies": this.claList,
-          "UserCode": "0"
+          "UserCode": this.UserCode        
         })
       }    
     },               
@@ -319,7 +326,7 @@
       },       
       getPieChart(postProps){
         // 门店销售数据
-        let url = this.urlApi[0]
+        let url = this.urlApi
         // md5加密
         let md5Obj = setMd5(postProps)
         let sign = md5Obj.sign

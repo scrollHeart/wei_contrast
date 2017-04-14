@@ -74,6 +74,7 @@ import tab from 'vux/dist/components/tab'
 import tabItem from 'vux/dist/components/tab-item'
 import {setMd5} from 'utilJs/unit'
 import store from '../vuex/store'
+import { getUserCode, getApiUrl2 } from '../vuex/getters'
   export default{
     data () {
       return {
@@ -88,10 +89,10 @@ import store from '../vuex/store'
         listsE: [],
         // editShow(控制选择页面的显示与隐藏)
         editShow: false,
-        apiUrl: [
-        // C_01 121.69.42.34:9089 http://shxh.pms.com http://pms.bookmall.com.cn
-          'http://pms.bookmall.com.cn/api/SJFX/GetMdList'
-        ],
+        // apiUrl: [
+        // // C_01 121.69.42.34:9089 http://shxh.pms.com http://pms.bookmall.com.cn
+        //   this.ApiUrl2 + '/api/SJFX/GetMdList'
+        // ],
         // selectArr(储存用户选中的门店名称)
         selectArr: []
       }
@@ -99,6 +100,12 @@ import store from '../vuex/store'
     props: {
       // sortName 和父组件的sortName是双向绑定的
       sortName: String     
+    },
+    vuex:{
+      getters:{
+        UserCode: getUserCode,
+        ApiUrl2: getApiUrl2
+      }
     },
     watch:{
       $route(val,oldVal){
@@ -118,8 +125,13 @@ import store from '../vuex/store'
       }    
     }, 
     ready(){
-
-      this.getNameData({"UserCode": "0"})
+      this.getNameData({"UserCode": this.UserCode})
+      console.log(this.apiUrl)
+    },
+    computed:{
+      apiUrl(){
+        return this.ApiUrl2 + '/api/SJFX/GetMdList'
+      }
     },
     components: {
       tab,
@@ -181,7 +193,7 @@ import store from '../vuex/store'
       },
       getNameData (getProps) {
 
-        let url = this.apiUrl[0]
+        let url = this.apiUrl
         //  md5加密
         let md5Obj = setMd5(getProps)
         let sign = md5Obj.sign

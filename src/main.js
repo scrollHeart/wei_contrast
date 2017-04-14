@@ -13,10 +13,6 @@ import md from './components/md'
 import supplier from './components/supplier'
 import classify from './components/classify'
 import store from './vuex/store'
-import {
-  sync
-} from 'vuex-router-sync'
-
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(Vuex)
@@ -43,7 +39,7 @@ Vue.http.interceptors.push((request, next) => {
   })
   next((Response) => {
 
-    if (!Response.ok) {
+    if (!Response.ok || Response.body.code === 500 || Response.body === '12') {
       commit('ERROR', {
         error: true
       })
@@ -59,8 +55,21 @@ Vue.http.interceptors.push((request, next) => {
   })
 })
 
-sync(store, router)
 
+router.beforeEach(({
+  to,
+  from,
+  next
+}) => {
+
+  let userId = window.localStorage.getItem('userId')
+  if (userId === '0' || userId === 'undefined' || userId === null) {
+    window.location.href = 'http://qianduan.cnonixdata.com/shxh'
+  } else {
+    next()
+  }
+
+})
 router.redirect({
   '/': 'md/mdSale',
   '/supplier': 'supplier/supSale',

@@ -36,19 +36,24 @@ import tab from 'vux/dist/components/tab'
 import tabItem from 'vux/dist/components/tab-item'
 import {setMd5} from 'utilJs/unit'
 import store from '../vuex/store'
-
+import { getApiUrl1 } from '../vuex/getters'
   export default{
     data () {
       return {
         switName: '销售',
         lists: [],
-        apiUrl: [
-        // C_03 200.1.3.89:1209 shda.91onix.com
-          'http://shda.bookmall.com.cn/App/AppCommon/GetFirstSaleClassify'
-        ],        
+        // apiUrl: [
+        // // C_03 200.1.3.89:1209 shda.91onix.com http://shda.bookmall.com.cn
+        //   'http://shda.bookmall.com.cn'+'/App/AppCommon/GetFirstSaleClassify'
+        // ],        
         editShow: false,
         selectArr: [],
         listsId: []
+      }
+    },
+    vuex: {
+      getters: {
+        ApiUrl1: getApiUrl1
       }
     },
     props: {
@@ -76,6 +81,11 @@ import store from '../vuex/store'
     components: {
       tab,
       tabItem
+    },
+    computed: {
+      apiUrl(){
+        return this.ApiUrl1 + '/App/AppCommon/GetFirstSaleClassify'
+      }
     },
     methods: {
       triggleswitName (swit) {
@@ -129,7 +139,8 @@ import store from '../vuex/store'
       },
       getNameData (getProps) {
 
-        let url = this.apiUrl[0]
+        let url = this.apiUrl
+        console.log(url)
         //  md5加密
         let md5Obj = setMd5(getProps)
         let sign = md5Obj.sign

@@ -32,15 +32,15 @@
   import echarts from 'echarts'
   import macarons from 'echarts/theme/macarons'
   import { setDate, getStartTime, getEndTime, setMd5 } from 'utilJs/unit'
-  import { getStartT, getEndT, getMdId } from '../vuex/getters'
+  import { getStartT, getEndT, getMdId, getNowMonth, getSelMonth, getUserCode, getApiUrl1 } from '../vuex/getters'
   import store from '../vuex/store'
   export default {
     data () {
       return {      
-        urlApi: [
-          // S-06 200.1.3.89:1209 shda.91onix.com http://shda.test.com/ http://shda.bookmall.com.cn
-          'http://shda.bookmall.com.cn/App/AppSales/ContrastFacetByMd'
-        ],
+        // urlApi: [
+        //   // S-06 200.1.3.89:1209 shda.91onix.com http://shda.test.com/ http://shda.bookmall.com.cn
+        //   'http://shda.bookmall.com.cn/App/AppSales/ContrastFacetByMd'
+        // ],
         yes: true,
         isShow: false,
         myChart1: Object,
@@ -158,7 +158,11 @@
       getters:{
         StartT: getStartT,
         EndT: getEndT,
-        mdsList: getMdId
+        mdsList: getMdId,
+        nowMonth: getNowMonth,
+        selMonth: getSelMonth,
+        UserCode: getUserCode,
+        ApiUrl1: getApiUrl1     
       }  
     },
     route:{
@@ -193,9 +197,14 @@
         "StartTime":this.StartT,
         "EndTime":this.EndT,
         "Mds": this.mdsList,
-        "UserCode": "0"
+        "UserCode": this.UserCode
       }) 
-    },    
+    }, 
+    computed: {
+      urlApi(){
+        return this.ApiUrl1 + '/App/AppSales/ContrastFacetByMd'
+      }
+    },   
     events: {
       changeEcharts () {
 
@@ -207,7 +216,7 @@
           "StartTime":this.StartT,
           "EndTime":this.EndT,
           "Mds": this.mdsList,
-          "UserCode": "0"
+          "UserCode": this.UserCode        
         })        
       }, 
       changeTime(){
@@ -219,7 +228,7 @@
           "StartTime":this.StartT,
           "EndTime":this.EndT,
           "Mds": this.mdsList,
-          "UserCode": "0"
+          "UserCode": this.UserCode
         })
       },
       noData(){
@@ -228,6 +237,11 @@
 
         this.$set('noneData1',true) 
         this.$set('noneData2',true) 
+
+        console.log(this.myChart1)
+
+        // this.mychart1.clear()
+        // this.mychart2.clear()
 
         let legendName = this.option1.legend.data
 
@@ -257,13 +271,27 @@
         this.isShow = false;
         this.yes = true;
 
-        this.whichEcharts (this.lists,'MyRate','MyRate','FormatMy',1)
+        if(this.selMonth >= this.nowMonth){
+
+          this.$emit('noData')
+
+        }else{
+
+          this.whichEcharts (this.lists,'MyRate','MyRate','FormatMy',1)
+        }
       },
       goEcharts2 () {
         this.isShow = true;
         this.yes = false;
 
-        this.whichEcharts (this.lists,'VarietyRate','VarietyRate','Variety',2)
+        if(this.selMonth >= this.nowMonth){
+
+          this.$emit('noData')
+
+        }else{  
+
+          this.whichEcharts (this.lists,'VarietyRate','VarietyRate','Variety',2)
+        }
       },
       whichEcharts (arr,condition,op1,op2,n) {
 
@@ -375,7 +403,7 @@
       },
       getPieChart(postProps){
         // 门店销售数据
-        let url = this.urlApi[0]
+        let url = this.urlApi
         // md5加密
         let md5Obj = setMd5(postProps)
         let sign = md5Obj.sign

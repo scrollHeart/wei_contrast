@@ -33,16 +33,16 @@
   import echarts from 'echarts'
   import macarons from 'echarts/theme/macarons'
   import { setDate, getStartTime, getEndTime, setMd5 } from 'utilJs/unit'
-  import { getStartT, getEndT, getSupId } from '../vuex/getters'
+  import { getStartT, getEndT, getSupId, getNowMonth, getSelMonth, getUserCode, getApiUrl1} from '../vuex/getters'
   import store from '../vuex/store'
 
   export default {
     data () {
       return {       
-        urlApi: [
-          // s_07 200.1.3.89:1209 shda.91onix.com http://shda.test.com/ http://shda.bookmall.com.cn
-          'http://shda.bookmall.com.cn/App/AppSales/ContrastFacetBySupplier'
-        ],
+        // urlApi: [
+        //   // s_07 200.1.3.89:1209 shda.91onix.com http://shda.test.com/ http://shda.bookmall.com.cn
+        //   'http://shda.bookmall.com.cn/App/AppSales/ContrastFacetBySupplier'
+        // ],
         yes: true,
         isShow: false,
         myChart1: Object,
@@ -162,7 +162,11 @@
       getters:{
         StartT: getStartT,
         EndT: getEndT,
-        supList: getSupId
+        supList: getSupId,
+        nowMonth: getNowMonth,
+        selMonth: getSelMonth,
+        UserCode: getUserCode,
+        ApiUrl1: getApiUrl1
       }  
     },
     route:{
@@ -193,6 +197,11 @@
         }
       }    
     },
+    computed:{
+      urlApi(){
+        return this.ApiUrl1 + '/App/AppSales/ContrastFacetBySupplier'
+      }
+    },
     ready () {
 
     // 初始化echarts图
@@ -203,7 +212,7 @@
         "StartTime":this.StartT,
         "EndTime":this.EndT,
         "Supps": this.supList,
-        "UserCode": "0"
+        "UserCode": this.UserCode
       })      
     },    
     events: {
@@ -217,7 +226,7 @@
           "StartTime":this.StartT,
           "EndTime":this.EndT,
           "Supps": this.supList,
-          "UserCode": "0"
+          "UserCode": this.UserCode
         })        
       }, 
       changeTime(){
@@ -229,7 +238,7 @@
           "StartTime":this.StartT,
           "EndTime":this.EndT,
           "Supps": this.supList,
-          "UserCode": "0"
+          "UserCode": this.UserCode
         })
       },
       noData(){
@@ -238,6 +247,7 @@
 
         this.$set('noneData1',true) 
         this.$set('noneData2',true) 
+
 
         let legendName = this.option1.legend.data
 
@@ -258,8 +268,7 @@
 
 
         this.myChart1.setOption(this.option1)
-        this.myChart2.setOption(this.option2); 
-
+        this.myChart2.setOption(this.option2) 
       }       
     },    
     methods: {     
@@ -267,13 +276,28 @@
         this.isShow = false;
         this.yes = true;
 
-        this.whichEcharts (this.lists,'MyRate','MyRate','FormatMy',1)
+        if(this.selMonth >= this.nowMonth){
+
+          this.$emit('noData')
+
+        }else{
+
+          this.whichEcharts (this.lists,'MyRate','MyRate','FormatMy',1)
+        }
+
       },
       goEcharts2 () {
         this.isShow = true;
         this.yes = false;
 
-        this.whichEcharts (this.lists,'VarietyRate','VarietyRate','Variety',2)
+        if(this.selMonth >= this.nowMonth){
+
+          this.$emit('noData')
+
+        }else{
+          
+          this.whichEcharts (this.lists,'VarietyRate','VarietyRate','Variety',2)
+        }
       },
       whichEcharts (arr,condition,op1,op2,n) {
 
@@ -493,7 +517,7 @@
       },      
       getPieChart(postProps){
         // 门店销售数据
-        let url = this.urlApi[0]
+        let url = this.urlApi
         // md5加密
         let md5Obj = setMd5(postProps)
         let sign = md5Obj.sign

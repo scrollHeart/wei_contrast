@@ -44,7 +44,7 @@ import tabItem from 'vux/dist/components/tab-item'
 import {setMd5} from 'utilJs/unit'
 import  '../assets/pinyinUtil.js'
 import store from '../vuex/store'
-
+import { getUserCode, getApiUrl2 } from '../vuex/getters'
   export default{
     data () {
       return {
@@ -52,11 +52,11 @@ import store from '../vuex/store'
         lists: [],
         listsPX: [],
         resData: [],
-        apiUrl: [
+        // apiUrl: [
 
-         // 121.69.42.34:9089 http://shxh.pms.com http://pms.bookmall.com.cn
-          'http://pms.bookmall.com.cn/api/SJFX/GetPreTopSupplierList'
-        ],
+        //  // 121.69.42.34:9089 http://shxh.pms.com http://pms.bookmall.com.cn
+        //   'http://pms.bookmall.com.cn/api/SJFX/GetPreTopSupplierList'
+        // ],
         editShow: false,
         selectArr: [],
         listsId: [],
@@ -70,6 +70,12 @@ import store from '../vuex/store'
     },   
     props: {
       sortName: String
+    },
+    vuex:{
+      getters: {
+        UserCode: getUserCode,
+        apiUrl2: getApiUrl2
+      }
     },
     watch:{
       $route(val,oldVal){
@@ -89,7 +95,7 @@ import store from '../vuex/store'
     }, 
     ready(){
 
-        this.getNameData({"UserCode": "0"})
+        this.getNameData({"UserCode": this.UserCode})
     },
     components: {
       tab,
@@ -113,7 +119,10 @@ import store from '../vuex/store'
       },            
       VZlocation () {
         return this.firstZMIndex(this.VZ)
-      }        
+      },
+      apiUrl(){
+        return this.apiUrl2 + '/api/SJFX/GetPreTopSupplierList'
+      }       
     },
     events: {
       activeBlue (e) {
@@ -182,7 +191,7 @@ import store from '../vuex/store'
       },
       getNameData (getProps) {
 
-        let url = this.apiUrl[0]
+        let url = this.apiUrl
         //  md5加密
         let md5Obj = setMd5(getProps)
         let sign = md5Obj.sign
