@@ -169,7 +169,7 @@ export default {
       this.$els.footer.style.display = 'block';
     },
     refresh(){
-      location.href = "/md/mdSale"
+      location.href = "http://qianduan.cnonixdata.com/wei_contrast/index.html"
     }  
   }
 }
