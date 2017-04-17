@@ -6,7 +6,7 @@
         <div class="noneData" v-if="noneData1">暂无数据</div>
         <p class="tit">
           <i class="echartsColor" v-el:echarts-color1></i>
-          {{ tabClassify }}: {{ claName1 }}
+          {{ tabClassify }} {{ claName1 }}
         </p>
         <p>{{ duty1 }}  {{ scale1 }}</p>
         <p>{{ tabName1 }} {{ total1 }}</p>  
@@ -18,7 +18,7 @@
         <div class="noneData" v-if="noneData2">暂无数据</div>
         <p class="tit">
           <i class="echartsColor" v-el:echarts-color2></i>
-          {{ tabClassify }}: {{ claName2 }}
+          {{ tabClassify }} {{ claName2 }}
         </p>
         <p>{{ duty2 }}  {{ scale2 }}</p>
         <p>{{ tabName2 }} {{ total2 }}</p>  
@@ -46,13 +46,13 @@
         isShow: false,
         myChart1: Object,
         myChart2: Object,
-        tabClassify: '分类',             
+        tabClassify: '',             
         claName1: '',
         claName2: '',
-        duty1: '销售码洋占比',
-        tabName1: '销售码洋',
-        duty2: '销售品种数占比',
-        tabName2: '销售品种数',        
+        duty1: '',
+        tabName1: '',
+        duty2: '',
+        tabName2: '',        
         scale1: '',
         total1: '',
         scale2: '',
@@ -184,14 +184,18 @@
         // 找到this.lists[i].MyRate里的第一个不为空的index
         this.eachData()
 
+        this.$set('tabClassify','分类:')
+
           // 先判断当前是哪个echarts图
         if(this.yes){
 
+          this.$set('duty1','销售码洋占比')                    
+          this.$set('tabName1','销售码洋')  
           this.whichEcharts (this.lists,'MyRate','MyRate','FormatMy',1)
           
-
         }else{
-
+          this.$set('duty2','销售品种数占比')                    
+          this.$set('tabName2','销售品种数')          
           this.whichEcharts (this.lists,'VarietyRate','VarietyRate','Variety',2)
 
         }      
@@ -282,7 +286,8 @@
           this.$emit('noData')
 
         }else{
-
+          this.$set('duty1','销售码洋占比')                    
+          this.$set('tabName1','销售码洋')           
           this.whichEcharts (this.lists,'MyRate','MyRate','FormatMy',1)
         }
 
@@ -296,7 +301,8 @@
           this.$emit('noData')
 
         }else{
-
+          this.$set('duty2','销售品种数占比')                    
+          this.$set('tabName2','销售品种数') 
           this.whichEcharts (this.lists,'VarietyRate','VarietyRate','Variety',2)
 
         }

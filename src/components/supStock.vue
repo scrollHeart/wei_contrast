@@ -6,7 +6,7 @@
         <div class="noneData" v-if="noneData1">暂无数据</div>
         <p class="tit">
           <i class="echartsColor" v-el:echarts-color1></i>
-          {{ tabClassify }}: {{ supplierName1 }}
+          {{ tabClassify }} {{ supplierName1 }}
         </p>
         <p>{{ duty1 }}  {{ scale1 }}</p>
         <p>{{ tabName1 }} {{ total1 }}</p>  
@@ -18,7 +18,7 @@
         <div class="noneData" v-if="noneData2">暂无数据</div>
         <p class="tit">
           <i class="echartsColor" v-el:echarts-color2></i>
-          {{ tabClassify }}: {{ supplierName2 }}
+          {{ tabClassify }} {{ supplierName2 }}
         </p>
         <p>{{ duty2 }}  {{ scale2 }}</p>
         <p>{{ tabName2 }} {{ total2 }}</p>  
@@ -46,13 +46,13 @@
         isShow: false,
         myChart1: Object,
         myChart2: Object,
-        tabClassify: '供应商',             
+        tabClassify: '',             
         supplierName1: '',        
         supplierName2: '',        
-        duty1: '库存码洋占比',
-        tabName1: '库存码洋',
-        duty2: '库存品种数占比',
-        tabName2: '库存品种数', 
+        duty1: '',
+        tabName1: '',
+        duty2: '',
+        tabName2: '', 
         scale1: '',
         total1: '',
         scale2: '',
@@ -178,15 +178,17 @@
 
         // 找到this.lists[i].MyRate里的第一个不为空的index
         this.eachData()
+        this.$set('tabClassify','供应商:')
 
           // 先判断当前是哪个echarts图
         if(this.yes){
-
+          this.$set('duty1','库存码洋占比')                    
+          this.$set('tabName1','库存码洋') 
           this.whichEcharts (this.lists,'MyRate','MyRate','FormatMy',1)
           
-
         }else{
-
+          this.$set('duty2','库存品种数占比')                    
+          this.$set('tabName2','库存品种数')  
           this.whichEcharts (this.lists,'VarietyRate','VarietyRate','Variety',2)
 
         }
@@ -227,14 +229,16 @@
       goEcharts1 () {
         this.isShow = false;
         this.yes = true;
-
+        this.$set('duty1','库存码洋占比')                    
+        this.$set('tabName1','库存码洋')
         this.whichEcharts (this.lists,'MyRate','MyRate','FormatMy',1)
      
       },
       goEcharts2 () {
         this.isShow = true;
         this.yes = false;
-
+        this.$set('duty2','库存品种数占比')                    
+        this.$set('tabName2','库存品种数')  
         this.whichEcharts (this.lists,'VarietyRate','VarietyRate','Variety',2)
 
       },    
