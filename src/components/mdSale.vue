@@ -485,7 +485,8 @@
    .main{
     width: 100%;
     height: 77%;
-    overflow-y: auto;
+    overflow-y: auto;    
+    overflow-x: hidden;
     position: relative;
     -webkit-overflow-scrolling: touch;
     margin-top: 2rem;
