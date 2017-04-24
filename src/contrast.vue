@@ -148,6 +148,11 @@ export default {
       }     
     } 
   },
+  ready(){
+    let html = document.documentElement;
+    window.rem = html.getBoundingClientRect().width / 16;
+    html.style.fontSize = window.rem + 'px';
+  },
   methods: {
     // tab分类切换
     triggleSortName(sort) {
@@ -165,7 +170,7 @@ export default {
       this.$els.footer.style.display = 'none';
     },
     showFoot () {
-    //点击确认按钮时派发control事件到根组件showFoot，控制底部菜单显示
+    //点击确认按钮时派发control事件到根组件showFoot，控制底部菜单显示S
       this.$els.footer.style.display = 'block';
     },
     refresh(){
